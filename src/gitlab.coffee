@@ -16,10 +16,10 @@
 #   Put http://<HUBOT_URL>:<PORT>/gitlab/system as your system hook
 #   Put http://<HUBOT_URL>:<PORT>/gitlab/web as your web hook (per repository)
 #   You can also append "?targets=%23room1,%23room2" to the URL to control the
-#   message destination.  Using the "target" parameter to override the 
+#   message destination.  Using the "target" parameter to override the
 #   GITLAB_CHANNEL configuration value.
 #   You can also append "?branches=master,deve" to the URL to control the
-#   message destination.  Using the "target" parameter to override the 
+#   message destination.  Using the "target" parameter to override the
 #   GITLAB_BRANCHES configuration value.
 #
 # Commands:
@@ -151,15 +151,15 @@ module.exports = (robot) ->
                 robot.send user, text
             when "merge_request"
               unless hook.object_attributes.action == "update"
-                if showMergeDesc == "1"  
-                  text = "Merge Request #{bold(hook.object_attributes.iid)}: #{hook.user.username} #{hook.object_attributes.action}  #{hook.object_attributes.title} between #{bold(hook.object_attributes.source_branch)} and #{bold(hook.object_attributes.target_branch)} at #{bold(hook.object_attributes.url)}\n"
+                if showMergeDesc == "1"
+                  text = "Merge Request ##{bold(hook.object_attributes.iid)}: #{hook.user.username} #{hook.object_attributes.action}  #{hook.object_attributes.title} between #{bold(hook.object_attributes.source_branch)} and #{bold(hook.object_attributes.target_branch)} at #{bold(hook.object_attributes.url)}\n"
                   splitted = "${hook.object_attributes.description}".split  "\r\n"
                   for i in [0...splitted.length]
                     splitted[i] = "> " + splitted[i]
                   text += "\r\n" + splitted.join "\r\n"
                   robot.send user, text
                 else
-                  robot.send user, "Merge Request #{bold(hook.object_attributes.iid)}: #{hook.user.username} #{hook.object_attributes.action}  #{hook.object_attributes.title} (#{hook.object_attributes.state}) between #{bold(hook.object_attributes.source_branch)} and #{bold(hook.object_attributes.target_branch)} at #{bold(hook.object_attributes.url)}"
+                  robot.send user, "Merge Request ##{bold(hook.object_attributes.iid)}: #{hook.user.username} #{hook.object_attributes.action}  #{hook.object_attributes.title} (#{hook.object_attributes.state}) between #{bold(hook.object_attributes.source_branch)} and #{bold(hook.object_attributes.target_branch)} at #{bold(hook.object_attributes.url)}"
 
   robot.router.post "/gitlab/system", (req, res) ->
     handler "system", req, res
@@ -181,4 +181,4 @@ module.exports = (robot) ->
     robot.http(GITLAB_URL+"/api/v3/projects/"+project_id+"/trigger/builds")
         .header('Content-Type', 'application/json')
         .post(data) (err, res, body) ->
-          # your code here    
+          # your code here
