@@ -151,9 +151,9 @@ module.exports = (robot) ->
                 robot.send user, text
             when "merge_request"
               unless hook.object_attributes.action == "update"
-                if showMergeDesc == "1"
+                if showMergeDesc == "1" and hook.object_attributes.description
                   text = "Merge Request ##{bold(hook.object_attributes.iid)}: #{hook.user.username} #{hook.object_attributes.action}  #{hook.object_attributes.title} between #{bold(hook.object_attributes.source_branch)} and #{bold(hook.object_attributes.target_branch)} at #{bold(hook.object_attributes.url)}\n"
-                  splitted = "${hook.object_attributes.description}".split  "\r\n"
+                  splitted = hook.object_attributes.description.split  "\r\n"
                   for i in [0...splitted.length]
                     splitted[i] = "> " + splitted[i]
                   text += "\r\n" + splitted.join "\r\n"
